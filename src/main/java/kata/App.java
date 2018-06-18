@@ -15,11 +15,7 @@ public class App
 
         try {
             img = ImageIO.read(new File("/home/caps/Projects/imageResizer/src/resources/background.jpg"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (NullPointerException e) {
             e.printStackTrace();
         }
 
