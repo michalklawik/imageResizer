@@ -78,8 +78,8 @@ public class UserImage {
 
     public void saveResizedImage() {
         try {
-            File outputFile = new File(this.getFileName().substring(0, this.getFileName().lastIndexOf(".")) + "-resized");
-            ImageIO.write(img, fileType, outputFile);
+            File outputFile = new File(this.getFileName());
+            ImageIO.write(resizeImage(), fileType, outputFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
