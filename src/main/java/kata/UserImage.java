@@ -1,6 +1,7 @@
 package kata;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -67,21 +68,27 @@ public class UserImage {
         this.imgWidth = imgWidth;
     }
 
+    public static File getImage() {
+        final JFileChooser chooser = new JFileChooser();
+        chooser.showOpenDialog(null);
+        return chooser.getSelectedFile();
+    }
+
     public BufferedImage resizeImage() {
-        BufferedImage resizedImage = new BufferedImage(imgHeight/2, imgWidth/2, img.getType());
+        Image temp = img.getScaledInstance(imgWidth/2, imgHeight/2, Image.SCALE_SMOOTH);
+        BufferedImage resizedImage = new BufferedImage(imgWidth/2, imgHeight/2, img.getType());
         Graphics2D graphics2D = resizedImage.createGraphics();
 
-        graphics2D.drawImage(img, 0,0,null);
+        graphics2D.drawImage(temp, 0,0,null);
         graphics2D.dispose();
         return resizedImage;
     }
 
     public void saveResizedImage() {
+        final JFileChooser saver = new JFileChooser();
+        saver.showSaveDialog(null);
         try {
-            File outputFile = new File(this.getFileName().substring(0, getFileName().lastIndexOf("."))
-                    + "-resized."
-                    + getFileType());
-            ImageIO.write(resizeImage(), fileType, outputFile);
+            ImageIO.write(resizeImage(), fileType, saver.getSelectedFile());
         } catch (IOException e) {
             e.printStackTrace();
         }
