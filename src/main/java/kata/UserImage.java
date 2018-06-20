@@ -78,7 +78,9 @@ public class UserImage {
 
     public void saveResizedImage() {
         try {
-            File outputFile = new File(this.getFileName());
+            File outputFile = new File(this.getFileName().substring(0, getFileName().lastIndexOf("."))
+                    + "-resized."
+                    + getFileType());
             ImageIO.write(resizeImage(), fileType, outputFile);
         } catch (IOException e) {
             e.printStackTrace();
