@@ -12,20 +12,20 @@ import java.util.Objects;
 
 public class UserImage {
 
-    BufferedImage img;
-    String fileName;
-    String fileType;
-    int imgHeight;
-    int imgWidth;
+    private BufferedImage img;
+    private String fileName;
+    private String fileType;
+    private int imgHeight;
+    private int imgWidth;
 
-    public UserImage(File file) {
+    UserImage(File file) {
         try {
             img = ImageIO.read(file);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        fileName = file.getName();
         fileType = getFileType(file);
+        fileName = file.getName().replace("." + fileType, "");
         imgHeight = img.getHeight();
         imgWidth = img.getWidth();
     }
@@ -70,7 +70,7 @@ public class UserImage {
         this.imgWidth = imgWidth;
     }
 
-    public static File getImage() {
+    static File getImage() {
         final JFileChooser chooser = new JFileChooser();
         chooser.setAcceptAllFileFilterUsed(false);
         FileFilter fileFilter = new FileNameExtensionFilter("Image", "jpg", "png", "jpeg");
@@ -79,7 +79,7 @@ public class UserImage {
         return chooser.getSelectedFile();
     }
 
-    public BufferedImage resizeImage() {
+    BufferedImage resizeImage() {
         Image temp = img.getScaledInstance(imgWidth/2, imgHeight/2, Image.SCALE_SMOOTH);
         BufferedImage resizedImage = new BufferedImage(imgWidth/2, imgHeight/2, img.getType());
         Graphics2D graphics2D = resizedImage.createGraphics();
@@ -89,14 +89,13 @@ public class UserImage {
         return resizedImage;
     }
 
-    public void saveResizedImage() {
+    void saveResizedImage() {
         final JFileChooser saver = new JFileChooser();
+        saver.setSelectedFile(new File(fileName + "_resized." + fileType));
         saver.showSaveDialog(null);
-        saver.setAcceptAllFileFilterUsed(false);
-
-//        saver.addChoosableFileFilter(filter);
         try {
             ImageIO.write(resizeImage(), fileType, saver.getSelectedFile());
+            JOptionPane.showMessageDialog(null, "Resized image saved :)", "Save image", JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException e) {
             e.printStackTrace();
         }
