@@ -2,6 +2,8 @@ package kata;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -70,6 +72,9 @@ public class UserImage {
 
     public static File getImage() {
         final JFileChooser chooser = new JFileChooser();
+        chooser.setAcceptAllFileFilterUsed(false);
+        FileFilter fileFilter = new FileNameExtensionFilter("Image", "jpg", "png", "jpeg");
+        chooser.addChoosableFileFilter(fileFilter);
         chooser.showOpenDialog(null);
         return chooser.getSelectedFile();
     }
@@ -87,6 +92,9 @@ public class UserImage {
     public void saveResizedImage() {
         final JFileChooser saver = new JFileChooser();
         saver.showSaveDialog(null);
+        saver.setAcceptAllFileFilterUsed(false);
+
+//        saver.addChoosableFileFilter(filter);
         try {
             ImageIO.write(resizeImage(), fileType, saver.getSelectedFile());
         } catch (IOException e) {
